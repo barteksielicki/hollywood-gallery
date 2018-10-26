@@ -32,11 +32,11 @@ def load_metadata(path):
     :return: (list, list)
     """
     meta = loadmat(path)['imdb'][0, 0]
-    paths = np.concatenate(meta[2][0])
-    images = [
-        path_to_img(os.path.join(IMAGES_DIRECTORY, path))
-        for path in paths
+    paths = [
+        os.path.join(IMAGES_DIRECTORY, path)
+        for path in np.concatenate(meta[2][0])
     ]
+    images = [path_to_img(path) for path in paths]
     names = np.concatenate(meta[4][0])
     assert len(images) == len(names)
     return paths, names, images
