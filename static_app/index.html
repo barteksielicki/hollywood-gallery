@@ -1,36 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
-          integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-    <link href="style.css" type="text/css">
-    <title>Hollywood Gallery</title>
-</head>
-<body>
-<!-- APP TEMPLATE -->
-<div id="app" v-cloak>
-    <div class="pure-g">
-        <div class="pure-u-1-2">
-            <h1>Input</h1>
-            <input type="file" accept="image/*;capture=camera" @change="handleNewImage">
-            <div v-if="requestImage">
-                <img :src="requestImageSrc">
-                <br>
-                <button class="pure-button" @click="uploadImage">
-                    Upload
-                </button>
-            </div>
-        </div>
-        <div class="pure-u-1-2">
-            <h1>Result</h1>
-            <img v-if="responseImageSrc" :src="responseImageSrc">
-        </div>
-    </div>
-</div>
-<!-- JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>hollywood-gallery</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/dist/build.js"></script>
+  </body>
 </html>
