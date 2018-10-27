@@ -5,3 +5,5 @@ RUN pip install "tornado<5" "tqdm"
 WORKDIR /app
 
 ADD . .
+
+CMD python app.py
