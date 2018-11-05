@@ -19,6 +19,9 @@ meta, faces_matrix = load_faces(FACES_FILE)
 
 # handlers
 class ProcessImageHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+
     def post(self):
         img_bytes = self.request.files['photo'][0]['body']
         img = bytes_to_img(img_bytes)
