@@ -12,4 +12,4 @@ ADD . .
 
 RUN cd static_app && npm i && npm run build
 
-CMD python app.py2npm
+CMD python app.py
