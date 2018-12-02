@@ -131,7 +131,7 @@
               this.canvas.toBlob(blob => {
                 this.blobImage = blob
               })
-              setTimeout(this.detectFace, 5000)
+              setTimeout(this.detectFace, 2000)
             } else {
               console.log("Face was not detected.")
               this.blobImage = null
