@@ -12,9 +12,7 @@ def load_faces(path):
             face = data.pop("face")
             meta.append(data)
             faces_matrix.append(face)
-    faces_matrix = np.array(faces_matrix)
-    np.random.shuffle(faces_matrix)
-    return meta, faces_matrix
+    return meta, np.array(faces_matrix)
 
 
 def nearest_vector(X, y):
