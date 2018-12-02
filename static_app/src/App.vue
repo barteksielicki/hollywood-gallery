@@ -9,6 +9,7 @@
       <h1>Face processor</h1>
       <img id="input-image" :src="this.base64Image || 'https://via.placeholder.com/480x360'">
       <img id="output-image" :src="this.responseImage || 'https://via.placeholder.com/480x360'">
+      <h3 class="text-center">{{ actorName }}</h3>
     </div>
   </div>
 </template>
@@ -27,6 +28,7 @@
         blobImage: null,
         base64Image: null,
         responseImage: null,
+        actorName: null,
         modelLoaded: false,
         cameraLoaded: false,
       }
@@ -87,9 +89,11 @@
           console.log(response)
           if (response.data.photo) {
             this.responseImage = `${API_URL}/${response.data.photo}`
+            this.actorName = response.data.name
           } else {
             alert("Backend couldn't find face!")
             this.responseImage = null
+            this.actorName = null
           }
         })
       }
@@ -111,6 +115,7 @@
               this.blobImage = null
               this.base64Image = null
               this.responseImage = null
+              this.actorName = null
               setTimeout(this.detectFace, 1000)
             }
           })
