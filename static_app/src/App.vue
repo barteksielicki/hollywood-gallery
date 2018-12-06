@@ -44,7 +44,7 @@
 <script>
   import axios from 'axios'
 
-  const API_URL = 'http://localhost:9000'
+  const API_URL = 'http://3.121.199.45'
 
   export default {
     data () {
