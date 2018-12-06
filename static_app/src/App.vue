@@ -1,42 +1,51 @@
 <template>
   <div id="app" class="main-app">
-	<div class="main-panel" style="width:100%">
-		<div>
-		  <h1>Face detector</h1>
-		  <img class="placeholder-img" src="https://via.placeholder.com/480x360" v-if="!cameraLoaded">
-		  <video id="video" width="480" height="360" preload autoplay loop muted v-show="cameraLoaded"></video>
-		</div>
-		<div>
-		  <h1>Face processor</h1>
-		  <img class="classification-img" id="input-image" :src="this.base64Image || 'https://via.placeholder.com/480x360'">
-		  <img class="classification-img" id="output-image" :src="this.responseImage || 'https://via.placeholder.com/480x360'">
-		  <h3 class="text-center">{{ actorName }}</h3>
-		</div>
-	</div>
-	<div class="right-panel">
-		<div class="right-panel-header">
-			<h4>Last 5 actors</h4>
-		</div>
-		<div v-for="actor in actors_history">
-			{{ actor.name }}
-		</div>
-		<div class="stats">
-			<h4>Most appearing actors</h4>
-			<div class="stats-list">
-				<div v-for="(actor, index) in actors_freq">
-					{{index+1}}. {{ actor.name }}: {{ actor.val }}%
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="main-panel" style="width:100%">
+      <div>
+        <h1>Face detector</h1>
+        <img class="placeholder-img" src="https://via.placeholder.com/480x360" v-if="!cameraLoaded">
+        <video id="video" width="480" height="360" preload autoplay loop muted v-show="cameraLoaded"></video>
+      </div>
+      <div>
+        <h1>Face processor</h1>
+        <img class="classification-img" id="input-image"
+             :src="this.base64Image || 'https://via.placeholder.com/480x360'">
+        <img class="classification-img" id="output-image"
+             :src="this.responseImage || 'https://via.placeholder.com/480x360'">
+        <h3 class="text-center">{{ actorName }}</h3>
+      </div>
+      <div>
+        <h1>Settings</h1>
+        <div>
+          Actors limit: {{ actorsLimit }}<br>
+          <input type="range" min="1" max="18827" v-model="actorsLimit" class="slider">
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="right-panel-header">
+        <h4>Last 5 actors</h4>
+      </div>
+      <div v-for="actor in actors_history">
+        {{ actor.name }}
+      </div>
+      <div class="stats">
+        <h4>Most appearing actors</h4>
+        <div class="stats-list">
+          <div v-for="(actor, index) in actors_freq">
+            {{index+1}}. {{ actor.name }}: {{ actor.val }}%
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
 
-  const API_URL = 'http://3.121.199.45:80'
-  
+  const API_URL = 'http://localhost:9000'
+
   export default {
     data () {
       return {
@@ -49,10 +58,11 @@
         actorName: null,
         modelLoaded: false,
         cameraLoaded: false,
-		actors_history: [],
-		n: 0,
-		actors_stats: {},
-		actors_freq: []
+        actorsLimit: 1000,
+        actors_history: [],
+        n: 0,
+        actors_stats: {},
+        actors_freq: [],
       }
     },
     computed: {
@@ -63,7 +73,7 @@
     mounted () {
       // get camera input
       this.video = document.getElementById('video')
-	  
+
       navigator.mediaDevices.getUserMedia({video: true, audio: false})
         .then(stream => {
           this.video.srcObject = stream
@@ -105,6 +115,7 @@
         // send and retrieve result
         const data = new FormData()
         data.append('photo', blob)
+        data.append('limit', this.actorsLimit)
         axios.post(API_URL + '/process', data, {
           headers: {'Content-Type': 'multipart/form-data'}
         }).then(response => {
@@ -112,7 +123,7 @@
           if (response.data.photo) {
             this.responseImage = `${API_URL}/${response.data.photo}`
             this.actorName = response.data.name
-			this.save_stats(response.data.name);
+            this.save_stats(response.data.name);
           } else {
             this.responseImage = null
             this.actorName = null
@@ -146,27 +157,29 @@
             setTimeout(this.detectFace, 1000)
           })
       },
-	  save_stats(name) {
-		this.n++
-		if(this.actors_history.length == 5) {
-		  this.actors_history.splice(0,1)
-		} 
-		this.actors_history.push({name: name})
-		
-		if(typeof this.actors_stats[name] === 'undefined') {
-			this.actors_stats[name] = 0
-		}
-		
-		this.actors_stats[name]++
-		
-		this.actors_freq = []
-		for(let key in this.actors_stats) {
-			this.actors_freq.push({name: key, val: Number((this.actors_stats[key]*100/this.n).toFixed(1))})
-		}
-		
-		this.actors_freq.sort(function(obj1, obj2) {return obj1.val < obj2.val ? 1 : -1 } )
-		this.actors_freq = this.actors_freq.splice(0,10)
-	  }
+      save_stats (name) {
+        this.n++
+        if (this.actors_history.length == 5) {
+          this.actors_history.splice(0, 1)
+        }
+        this.actors_history.push({name: name})
+
+        if (typeof this.actors_stats[name] === 'undefined') {
+          this.actors_stats[name] = 0
+        }
+
+        this.actors_stats[name]++
+
+        this.actors_freq = []
+        for (let key in this.actors_stats) {
+          this.actors_freq.push({name: key, val: Number((this.actors_stats[key] * 100 / this.n).toFixed(1))})
+        }
+
+        this.actors_freq.sort(function (obj1, obj2) {
+          return obj1.val < obj2.val ? 1 : -1
+        })
+        this.actors_freq = this.actors_freq.splice(0, 10)
+      }
     }
   }
 </script>
@@ -182,15 +195,16 @@
   }
 
   html {
-	  height: 100%;
-	  width: 100%;
+    height: 100%;
+    width: 100%;
   }
+
   body {
-	  margin: 0px !important;
-	  height: 100%;
-	  width: 100%;
+    margin: 0px !important;
+    height: 100%;
+    width: 100%;
   }
-  
+
   h1, h2 {
     font-weight: normal;
   }
@@ -213,30 +227,39 @@
     width: 480px;
     height: 360px;
   }
-  
+
   .right-panel {
-	width: 350px;
-	border-left: 2px solid #2c3e50;
+    width: 350px;
+    border-left: 2px solid #2c3e50;
   }
+
   .main-app {
-	display: flex;
-	margin: 0px !important;
-	height: 100%;
+    display: flex;
+    margin: 0px !important;
+    height: 100%;
   }
+
   .placeholder-img, .classification-img {
-	width: 240px;
-	height: 180px;
-  }  
+    width: 240px;
+    height: 180px;
+  }
+
   video {
-	width: 240px;
-	height: 180px;
+    width: 240px;
+    height: 180px;
   }
+
   .stats {
-	border-top: 1px solid #2c3e50;
-	margin-top: 20px;
+    border-top: 1px solid #2c3e50;
+    margin-top: 20px;
   }
+
   .stats-list {
-	text-align: left;
-	margin-left: 5px;
+    text-align: left;
+    margin-left: 5px;
+  }
+
+  .slider {
+    width: 500px;
   }
 </style>

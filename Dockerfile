@@ -2,7 +2,7 @@ FROM bamos/openface
 
 WORKDIR /app
 
-RUN pip install "tornado<5" "tqdm"
+RUN pip install "pandas" "tornado<5" "tqdm"
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
