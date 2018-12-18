@@ -35,7 +35,7 @@ class ProcessImageHandler(tornado.web.RequestHandler):
             )
             lookup_matrix = faces_matrix
             if actors_limit:
-                first_index = meta[meta['actor_id'] >= actors_limit].index[0]
+                first_index = meta[meta['actor_id'] >= int(actors_limit)].index[0]
                 lookup_matrix = lookup_matrix[:first_index, :]
             _, idx = nearest_vector(lookup_matrix, face_vector)
             response = meta.iloc[idx].to_dict()
