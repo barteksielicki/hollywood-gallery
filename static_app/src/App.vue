@@ -18,7 +18,7 @@
         <h1>Settings</h1>
         <div>
           Actors limit: {{ actorsLimit }}<br>
-          <input type="range" min="1" max="18827" v-model="actorsLimit" class="slider">
+          <input type="range" min="1" max="18826" v-model="actorsLimit" class="slider">
         </div>
       </div>
     </div>
