@@ -31,8 +31,8 @@ Preview of the app is shown below.
 
 ![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/preview.png "App preview")
 
-There is preview from the camera (1), image with found face (2) and actor's photo (3). There is one more thing on the user's interface - slider. It can be used to change the numbers of actors that will be considered when searching for
-the most suitable actor. 
+There is preview from the camera (1), image with found face (2) and actor's photo (3) and name (4). There is one more thing on the user's interface - slider (5). It can be used to change the numbers of actors that will be considered when searching for
+the most suitable actor. The last thing is the panel on the right. There is the list of last 5 returned actors (6) and list of 10 most frequently appearing actors (7).
 
 ### Server
 
