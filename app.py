@@ -30,11 +30,15 @@ class ProcessImageHandler(tornado.web.RequestHandler):
         except FaceError:
             response = {}
         else:
-            rows_limit = self.get_body_argument(
-                "limit", default=faces_matrix.shape[0], strip=False
+            actors_limit = self.get_body_argument(
+                "limit", default=None, strip=False
             )
-            _, idx = nearest_vector(faces_matrix[:int(rows_limit), :], face_vector)
-            response = meta[idx]
+            lookup_matrix = faces_matrix
+            if actors_limit:
+                first_index = meta[meta['actor_id'] >= int(actors_limit)].index[0]
+                lookup_matrix = lookup_matrix[:first_index, :]
+            _, idx = nearest_vector(lookup_matrix, face_vector)
+            response = meta.iloc[idx].to_dict()
             response["photo"] = response["photo"].replace(IMAGES_DIRECTORY, "img")
         self.write(json.dumps(response))
 

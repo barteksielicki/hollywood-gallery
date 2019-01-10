@@ -1,6 +1,7 @@
 import json
 
 import numpy as np
+import pandas as pd
 
 
 def load_faces(path):
@@ -12,7 +13,7 @@ def load_faces(path):
             face = data.pop("face")
             meta.append(data)
             faces_matrix.append(face)
-    return meta, np.array(faces_matrix)
+    return pd.DataFrame(meta), np.array(faces_matrix)
 
 
 def nearest_vector(X, y):
