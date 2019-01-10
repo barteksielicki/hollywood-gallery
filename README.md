@@ -24,7 +24,7 @@ The first that the model does is it detects the face on the image using dlib or 
 
 ## Architecture
 
-![Architecture](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/architecture.png "Architecture schema")
+![Architecture](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/architecture.jpg?raw=true "Architecture schema")
 
 The whole project consists of two parts: UI and server. UI is the interface for user, it shows the picture from the camera, sends
 requests with image of user to server, displays found actors and statistics about previously found actors. Server finds face on image from request,
@@ -39,7 +39,7 @@ name of the actor. Then this information is displayed and statistics are updated
 and top ten actors that have been returned the most times. After that it waits one second and repeats the whole process. 
 Preview of the app is shown below.
 
-![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/preview.jpg "App preview")
+![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/preview.png?raw=true "App preview")
 
 There is preview from the camera (1), image with found face (2) and actor's photo (3) and name (4). There is one more thing on the user's interface - slider (5). It can be used to change the numbers of actors that will be considered when searching for
 the most suitable actor. The last thing is the panel on the right. There is the list of last 5 returned actors (6) and list of 10 most frequently appearing actors (7).
