@@ -1,6 +1,14 @@
 <template>
   <div id="app" class="main-app">
     <div class="main-panel" style="width:100%">
+      <notifications group="foo" position='top left'/>
+      <div>
+        <h1>Hollywood gallery</h1>
+        <div class="description">
+          This is site will tell which actor you look alike. The idea is very simple - application will capture the 
+          image from the camera's picture then it will show the name and photo of the most look alike actor.
+        </div>
+      </div>
       <div>
         <h1>Face detector</h1>
         <img class="placeholder-img" src="https://via.placeholder.com/480x360" v-if="!cameraLoaded">
@@ -117,10 +125,12 @@
           } else {
             this.responseImage = null
             this.actorName = null
+            this.showWarn('Cannot detect face', 'Try to bring your face closer to the webcam.')
           }
         }).catch(err => {
           this.responseImage = null
           this.actorName = null
+          this.showError('Error', 'Something went wrong, please contact serwer administrator.')
         }).finally(() => {
           setTimeout(this.captureFrame, 1000)
         })
@@ -157,7 +167,26 @@
           return obj1.val < obj2.val ? 1 : -1
         })
         this.actors_freq = this.actors_freq.splice(0, 10)
+      },
+      showWarn (title, message) {
+        this.$notify({
+          group: 'foo',
+          type: 'warn',
+          title: title,
+          duration: 1000,
+          text: message
+        })
+      },
+      showError (title, message) {
+        this.$notify({
+          group: 'foo',
+          type: 'error',
+          title: title,
+          duration: 1000,
+          text: message
+        })
       }
+
     }
   }
 </script>
@@ -209,12 +238,24 @@
   .right-panel {
     width: 350px;
     border-left: 2px solid #2c3e50;
+    height: 100%;
+    padding-top: 150px;
   }
 
   .main-app {
     display: flex;
     margin: 0px !important;
     height: 100%;
+  }
+
+  .vue-notification {
+    border-radius: 10px;
+  }
+
+  .description {
+    width: 90%;
+    max-width: 740px;
+    margin: 0 auto;
   }
 
   .placeholder-img, .classification-img {
