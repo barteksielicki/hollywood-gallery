@@ -70,6 +70,7 @@
         n: 0,
         actors_stats: {},
         actors_freq: [],
+        faceNotDetectedCounter: 0,
       }
     },
     computed: {
@@ -122,10 +123,14 @@
             this.responseImage = `${API_URL}/${response.data.photo}`
             this.actorName = response.data.name
             this.save_stats(response.data.name)
+            this.faceNotDetectedCounter = 0
           } else {
             this.responseImage = null
             this.actorName = null
             this.showWarn('Cannot detect face', 'Try to bring your face closer to the webcam.')
+            if (this.faceNotDetectedCounter++ == 10) {
+              this.resetStats()
+            }
           }
         }).catch(err => {
           this.responseImage = null
@@ -167,6 +172,13 @@
           return obj1.val < obj2.val ? 1 : -1
         })
         this.actors_freq = this.actors_freq.splice(0, 10)
+      },
+      resetStats () {
+        this.n = 0
+        this.faceNotDetectedCounter = 0
+        this.actors_history = []
+        this.actors_stats = {}
+        this.actors_freq = []
       },
       showWarn (title, message) {
         this.$notify({
