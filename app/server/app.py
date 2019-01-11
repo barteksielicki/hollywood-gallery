@@ -9,9 +9,9 @@ from utils import load_faces, nearest_vector
 
 # settings
 PORT = 8000
-IMAGES_DIRECTORY = 'data/imdb_crop'
-STATIC_APP_DIRECTORY = 'static_app'
-FACES_FILE = 'data/faces.jsonl'
+IMAGES_DIRECTORY = '../data/imdb_crop'
+STATIC_APP_DIRECTORY = '../ui'
+FACES_FILE = '../data/faces.jsonl'
 
 # initial objects
 meta, faces_matrix = load_faces(FACES_FILE)

@@ -10,6 +10,6 @@ RUN apt-get install -y nodejs
 
 ADD . .
 
-RUN cd static_app && npm i && npm run build
+RUN cd ui && npm i && npm run build
 
 CMD python app.py

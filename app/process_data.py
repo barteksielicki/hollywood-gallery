@@ -11,8 +11,8 @@ import numpy as np
 from tqdm import tqdm
 from scipy.io import loadmat
 
-from faces import face_to_vec, FaceError
-from images import path_to_img
+from server.faces import face_to_vec, FaceError
+from server.images import path_to_img
 
 # settings
 METADATA_FILE = 'data/imdb.mat'
