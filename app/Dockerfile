@@ -12,4 +12,4 @@ ADD . .
 
 RUN cd ui && npm i && npm run build
 
-CMD python app.py
+CMD cd server && python app.py
