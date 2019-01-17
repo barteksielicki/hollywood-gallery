@@ -10,7 +10,7 @@ off the app.
 Our app's main goal is to recognise faces, therefore we need a way to translate an image to other represantation that can be better interpreted by the computer. That's what openface model is used for. It is already trained for translating images to vectors, also it has face recogniotion built in. The workflow of this model is shown on the shema underneath.
 
 ![Figure 1: Openface usage]
-(https://github.com/barteksielicki/hollywood-gallery/blob/master/images/schema.png)
+(https://raw.githubusercontent.com/barteksielicki/hollywood-gallery/master/images/schema.png)
 
 The first that the model does is it detects the face on the image using dlib or OpenCV. Then OpenCV is used again to transform the image using affine transformation so that face is on the same level as in the rest of the images. Then face is cropped of the picture and embedded to a 128-dimensional vector. This representation is much easier to work with then the whole image. For more info about openface please visit official site - http://cmusatyalab.github.io/openface.
 
