@@ -39,7 +39,7 @@ name of the actor. Then this information is displayed and statistics are updated
 and top ten actors that have been returned the most times. After that it waits one second and repeats the whole process. 
 Preview of the app is shown below.
 
-![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/preview.png?raw=true "App preview")
+![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/screen.png?raw=true "App preview")
 
 There is preview from the camera (1), image that was sent to server (2) and returned actor's photo (3). There is one more thing on the user's interface - slider (4). It can be used to change the numbers of actors that will be considered when searching for
 the most suitable actor. The last thing is the panel on the bottom (5) containing some images - those are last five photos that were returned from server. 
