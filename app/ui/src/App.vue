@@ -39,7 +39,7 @@
 <script>
   import axios from 'axios'
 
-  const API_URL = 'http://192.168.137.31'
+  const API_URL = 'https://hollywoodgallery.mini.pw.edu.pl'
 
   export default {
     data () {
