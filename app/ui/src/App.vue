@@ -3,24 +3,11 @@
     <div class="main-panel" style="width:100%">
       <notifications group="foo" position='top left'/>
       <div>
-        <h1>Hollywood gallery</h1>
-        <div class="description">
-          This site will tell you, which actor you look alike. The idea is very simple - application will capture the 
-          image from your webcam, and then it will show the name and photo of the most look alike actor.
-        </div>
+        <h1>File uploader</h1>
+        <input type="file" @change="onFileChanged" multiple>
       </div>
       <div>
-        <h1>Face detector</h1>
-        <img class="placeholder-img" src="https://via.placeholder.com/480x360" v-if="!cameraLoaded">
-        <video id="video" width="480" height="360" preload autoplay loop muted v-show="cameraLoaded"></video>
-      </div>
-      <div>
-        <h1>Face processor</h1>
-        <img class="classification-img" id="input-image"
-             :src="this.base64Image || 'https://via.placeholder.com/480x360'">
-        <img class="classification-img" id="output-image"
-             :src="this.responseImage || 'https://via.placeholder.com/480x360'">
-        <h3 class="text-center">{{ actorName }}</h3>
+        <button @click="resetStats">Reset</button>
       </div>
       <div>
         <h1>Settings</h1>
@@ -52,7 +39,7 @@
 <script>
   import axios from 'axios'
 
-  const API_URL = 'http://3.121.199.45'
+  const API_URL = 'http://127.0.0.1:8000'
 
   export default {
     data () {
@@ -73,44 +60,8 @@
         faceNotDetectedCounter: 0,
       }
     },
-    computed: {
-      isReady () {
-        return this.cameraLoaded
-      }
-    },
-    mounted () {
-      // get camera input
-      this.video = document.getElementById('video')
-
-      navigator.mediaDevices.getUserMedia({video: true, audio: false})
-        .then(stream => {
-          this.video.srcObject = stream
-          this.canvas = document.createElement('canvas')
-          this.canvas.width = this.video.width
-          this.canvas.height = this.video.height
-          this.context = this.canvas.getContext('2d')
-          this.cameraLoaded = true
-          console.log('Camera loaded')
-        })
-        .catch(error => {
-          console.log('Error loading camera.', error)
-        })
-    },
-    watch: {
-      isReady (nowReady, wasReady) {
-        if (!wasReady && nowReady) {
-          console.log('Capturing loop started...')
-          setTimeout(this.captureFrame, 1000)
-        }
-      },
-      blobImage (blob) {
-        // render preview
-        const reader = new FileReader()
-        reader.readAsDataURL(blob)
-        reader.onloadend = () => {
-          this.base64Image = reader.result
-        }
-
+    methods: {
+      findActor (blob) {
         // send and retrieve result
         const data = new FormData()
         data.append('photo', blob)
@@ -128,27 +79,20 @@
             this.responseImage = null
             this.actorName = null
             this.showWarn('Cannot detect face', 'Try to bring your face closer to the webcam.')
-            if (this.faceNotDetectedCounter++ == 10) {
-              this.resetStats()
-            }
           }
         }).catch(err => {
+          console.log(err)
           this.responseImage = null
           this.actorName = null
           this.showError('Error', 'Something went wrong, please contact serwer administrator.')
         }).finally(() => {
-          setTimeout(this.captureFrame, 1000)
         })
-      }
-    },
-    methods: {
-      captureFrame () {
-        // capture camera frame
-        console.log('capturing frame...')
-        this.context.drawImage(this.video, 0, 0, this.video.width, this.video.height)
-        this.canvas.toBlob(blob => {
-          this.blobImage = blob
-        })
+      },
+      onFileChanged (event) {
+        console.log(event.target.files);
+        for (let i = 0; i < event.target.files.length; i++) {
+          this.findActor(event.target.files[i])
+        }
       },
       save_stats (name) {
         this.n++
