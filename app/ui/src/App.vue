@@ -6,7 +6,8 @@
         <h1>Hollywood gallery</h1>
         <div class="description">
           This site will tell you, which actor you look alike. The idea is very simple - application will capture the
-          image from your webcam, and then it will show the name and photo of the most look alike actor.
+          image from your webcam, and then it will show the name and photo of the most look alike actor.<br>Please make sure there is only one person visible
+          in the frame!
         </div>
       </div>
       <div>
