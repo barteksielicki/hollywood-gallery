@@ -231,8 +231,8 @@
   }
 
   video {
-    width: 240px;
-    height: 180px;
+    width: 480px;
+    height: 360px;
   }
 
   .stats {
@@ -246,7 +246,7 @@
   }
 
   .slider {
-    width: 500px;
+    width: 480px;
   }
 
   .history {
