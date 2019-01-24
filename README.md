@@ -3,7 +3,7 @@
 This project is for telling people which actor they look alike. The idea is very simple - user sits in front of the computer (which has 
 a camera, of course) and when the application will capture the image from the camera's picture then it will show the name and photo 
 of the most look alike actor. Then after some time it will try to find the face again and the whole process will continue until user turns 
-off the app.
+off the app. 
 
 ## Face recognition
 
@@ -11,16 +11,16 @@ Our app's main goal is to recognize faces, therefore we need a way to translate 
 
 ![Figure 1: Openface usage](https://raw.githubusercontent.com/barteksielicki/hollywood-gallery/master/images/schema.png)
 
-The first that the model does is it detects the face on the image using dlib or OpenCV. Then OpenCV is used again to transform the image using affine transformation so that face is on the same level as in the rest of the images. Then face is cropped of the picture and embedded to a 128-dimensional vector. This representation is much easier to work with then the whole image. For more info about openface please visit official site - http://cmusatyalab.github.io/openface.
+The first that the model does is it detects the face on the image using dlib or OpenCV. Then OpenCV is used again to transform the image using affine transformation so that face is on the same level as in the rest of the images. Then face is cropped of the picture and embedded to a 128-dimensional vector. This representation is much easier to work with then the whole image. For more info about openface please visit official site - http://cmusatyalab.github.io/openface. Our application supports only one person in front of the camera.
 
 ## Technologies and data used
 
-* OpenFace (https://github.com/cmusatyalab/openface)
-* vue.js (https://vuejs.org/)
-* python (https://www.python.org/)
-* pandas (https://pandas.pydata.org/)
+* OpenFace (https://github.com/cmusatyalab/openface) - version 0.2.0
+* vue.js (https://vuejs.org/) - version 2.5
+* python (https://www.python.org/) - version 2.7
+* pandas (https://pandas.pydata.org/) - version 0.23.4
 * actors dataset from https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/ (18827 actors, over 300000 photos)
-* docker (https://www.docker.com/)
+* docker (https://www.docker.com/) - version 18.09.0
 
 ## Architecture
 
@@ -41,8 +41,7 @@ Preview of the app is shown below.
 
 ![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/screen.png?raw=true "App preview")
 
-There is preview from the camera (1), image that was sent to server (2) and returned actor's photo (3). There is one more thing on the user's interface - slider (4). It can be used to change the numbers of actors that will be considered when searching for
-the most suitable actor. The last thing is the panel on the bottom (5) containing some images - those are last five photos that were returned from server. 
+On the top of the page there's slider that can be used to change the numbers of actors that will be considered when searching for the most suitable actor. There is preview from the camera (3), image that was sent to server (4) and returned actor's photo (5). The last thing is the panel on the bottom (6) containing some images - those are last five photos that were returned from server with actors' name under them. 
 When the server can't recognize face on any image over 10 seconds then the history resets.
 
 ### Server
