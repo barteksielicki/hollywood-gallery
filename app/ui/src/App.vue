@@ -11,21 +11,31 @@
       </div>
       <div>
         <h1>Face detector</h1>
-        <img class="placeholder-img" src="https://via.placeholder.com/480x360" v-if="!cameraLoaded">
-        <video id="video" width="480" height="360" preload autoplay loop muted v-show="cameraLoaded"></video>
+        <div class="video-wrapper">
+          <img class="placeholder-img" src="https://via.placeholder.com/480x480" v-if="!cameraLoaded">
+          <video id="video"
+                 width="480"
+                 height="480"
+                 preload autoplay loop muted
+                 v-show="cameraLoaded"
+                 :style="{transform: `rotate(${rotation}deg)`}"
+          ></video>
+        </div>
       </div>
       <div>
         <h1>Face processor</h1>
-        <img class="classification-img" id="input-image"
-             :src="this.base64Image || 'https://via.placeholder.com/480x360'">
+        <!--<img class="classification-img" id="input-image"-->
+             <!--:src="this.base64Image || 'https://via.placeholder.com/240x240'">-->
+        <canvas id="frame-canvas" width="240" height="240"></canvas>
         <img class="classification-img" id="output-image"
-             :src="this.responseImage || 'https://via.placeholder.com/480x360'">
+             :src="this.responseImage || 'https://via.placeholder.com/240x240'">
       </div>
       <div>
         <h1>Settings</h1>
         <div>
           Actors limit: {{ actorsLimit }}<br>
-          <input type="range" min="1" max="18826" v-model="actorsLimit" class="slider">
+          <input type="range" min="1" max="18826" v-model="actorsLimit" class="slider"><br>
+          <button @click="rotate">Rotate camera input</button>
         </div>
       </div>
       <hr>
@@ -54,6 +64,7 @@
         actorsLimit: 1000,
         history: [],
         faceNotDetectedCounter: 0,
+        rotation: 0
       }
     },
     computed: {
@@ -68,9 +79,7 @@
       navigator.mediaDevices.getUserMedia({video: true, audio: false})
         .then(stream => {
           this.video.srcObject = stream
-          this.canvas = document.createElement('canvas')
-          this.canvas.width = this.video.width
-          this.canvas.height = this.video.height
+          this.canvas = document.getElementById('frame-canvas')
           this.context = this.canvas.getContext('2d')
           this.cameraLoaded = true
           console.log('Camera loaded')
@@ -88,11 +97,12 @@
       },
       blobImage (blob) {
         // render preview
-        const reader = new FileReader()
-        reader.readAsDataURL(blob)
-        reader.onloadend = () => {
-          this.base64Image = reader.result
-        }
+        // const reader = new FileReader()
+        // reader.readAsDataURL(blob)
+        // // reader.onloadend = () => {
+        // //   this.base64Image = reader.result
+        // //   console.log('base64 end')
+        // // }
 
         const currentImage = this.responseImage
 
@@ -132,7 +142,13 @@
       captureFrame () {
         // capture camera frame
         console.log('capturing frame...')
-        this.context.drawImage(this.video, 0, 0, this.video.width, this.video.height)
+        this.context.translate(120, 120);
+        this.context.rotate(this.rotation * Math.PI / 180)
+        this.context.translate(-120, -120);
+        this.context.drawImage(this.video, 0, 0, 480, 480, 0, 0, 240, 240)
+        this.context.translate(120, 120);
+        this.context.rotate(-this.rotation * Math.PI / 180)
+        this.context.translate(-120, -120);
         this.canvas.toBlob(blob => {
           this.blobImage = blob
         })
@@ -159,6 +175,9 @@
           duration: 1000,
           text: message
         })
+      },
+      rotate () {
+        this.rotation = (this.rotation + 90) % 360
       }
 
     }
@@ -227,12 +246,20 @@
 
   .placeholder-img, .classification-img {
     width: 240px;
-    height: 180px;
+    height: 240px;
+  }
+
+  .video-wrapper {
+    margin: 0 auto;
+    width: 480px;
+    height: 480px;
+    overflow: hidden;
   }
 
   video {
     width: 480px;
-    height: 360px;
+    height: 480px;
+    object-fit: cover;
   }
 
   .stats {
@@ -247,6 +274,10 @@
 
   .slider {
     width: 480px;
+  }
+
+  hr {
+    margin: 25px 0;
   }
 
   .history {
