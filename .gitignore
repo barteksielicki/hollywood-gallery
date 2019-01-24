@@ -107,3 +107,5 @@ data/
 
 # IDE
 .idea/
+
+node_modules/
