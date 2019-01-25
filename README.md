@@ -41,7 +41,7 @@ Preview of the app is shown below.
 
 ![Preview](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/screen.png?raw=true "App preview")
 
-On the top of the page there's slider that can be used to change the numbers of actors that will be considered when searching for the most suitable actor. There is preview from the camera (3), image that was sent to server (4) and returned actor's photo (5). The last thing is the panel on the bottom (6) containing some images - those are last five photos that were returned from server with actors' name under them. 
+On the top of the page there's slider (1) that can be used to change the numbers of actors that will be considered when searching for the most suitable actor. Under the slider there's a button (2) that allows the user to rotate the camera's preview, every click rotates it 90 degrees clockwise. There is preview from the camera (3), image that was sent to server (4) and returned actor's photo (5). The last thing is the panel on the bottom (6) containing some images - those are last five photos that were returned from server with actors' name under them. 
 When the server can't recognize face on any image over 10 seconds then the history resets.
 
 ### Server
