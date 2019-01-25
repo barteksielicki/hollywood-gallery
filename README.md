@@ -27,7 +27,7 @@ The first that the model does is it detects the face on the image using dlib or 
 ![Architecture](https://github.com/barteksielicki/hollywood-gallery/blob/master/images/architecture.jpg?raw=true "Architecture schema")
 
 The whole project consists of two parts: UI and server. UI is the interface for user, it shows the picture from the camera, sends
-requests with image of user to server, displays found actors and statistics about previously found actors. Server finds face on image from request,
+requests with image of user to server and displays found actors. Server finds face on image from request,
 embeds it as vector and then finds most look alike actor. After this operations server sends back response with actor's name and image, which is displayed in UI.
 
 ## App workflow
