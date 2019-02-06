@@ -5,6 +5,9 @@ import pandas as pd
 
 
 def load_faces(path):
+    """
+    load JSON file containing processed dataset to pandas DataFrame.
+    """
     meta = []
     faces_matrix = []
     with open(path, "r") as f:
@@ -17,6 +20,9 @@ def load_faces(path):
 
 
 def nearest_vector(X, y):
+    """
+    Find vector v in X that has shortest euclidean distance to y
+    """
     diff = X - y
     dists = np.square(np.einsum('ij,ij->i', diff, diff))
     idx = np.argmin(dists)

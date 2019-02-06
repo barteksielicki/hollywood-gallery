@@ -19,17 +19,30 @@ meta, faces_matrix = load_faces(FACES_FILE)
 
 # handlers
 class ProcessImageHandler(tornado.web.RequestHandler):
+    """
+    Tornado RequestHandler. Provides one POST endpoint that accepts webcam photo.
+    """
     def set_default_headers(self):
+        """
+        Allows requests from other domains. We need it for testing purposes.
+        """
         self.set_header("Access-Control-Allow-Origin", "*")
 
     def post(self):
+        """
+        POST endpoint. Accepts webcam photo, executes face2vec on it, and returns metadata
+        (JSON object) of face that was nearest it in 128D space.
+        """
         img_bytes = self.request.files['photo'][0]['body']
         img = bytes_to_img(img_bytes)
         try:
             face_vector = face_to_vec(img)
         except FaceError:
+            # it throws FaceError when there's no visible face in image
             response = {}
         else:
+            # endpoint accepts one query argument - "limit".
+            # when set to X we compare our vector with faces of X first actors (in no specific order)
             actors_limit = self.get_body_argument(
                 "limit", default=None, strip=False
             )
@@ -45,6 +58,10 @@ class ProcessImageHandler(tornado.web.RequestHandler):
 
 # app
 def make_app():
+    """
+    URLs configuration for Tornado app. There is our POST endpoint, and static files handlers,
+    so we could host photos of actors from dataset.
+    """
     return tornado.web.Application([
         (r"/process", ProcessImageHandler),
         (r"/img/(.*)", tornado.web.StaticFileHandler, {
@@ -59,6 +76,9 @@ def make_app():
 
 # running script
 if __name__ == '__main__':
+    """
+    Starts Tornado HTTP server listening on given port.
+    """
     app = make_app()
     app.listen(PORT)
     print("Listening on port %d..." % PORT)

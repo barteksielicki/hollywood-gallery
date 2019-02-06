@@ -2,6 +2,8 @@
 
 """
 This script is responsible for initial faces processing.
+It requires access to IMDB-WIKI dataset (*.mat file and images directory)
+https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/
 """
 import json
 import os
@@ -23,6 +25,8 @@ OUTPUT_FILE = 'data/faces.jsonl'
 # helper functions
 def load_metadata(path):
     """
+    Loads metadata from *.mat file
+
     :param path: str
     :return: (list, list)
     """
@@ -38,6 +42,9 @@ def load_metadata(path):
 
 def save_face(name, photo, output_file):
     """
+    Save face (JSON object containing 128D vector, name and path to original image)
+    to output file.
+
     :param name: str
     :param photo: str
     :param output_file: file
@@ -58,8 +65,11 @@ def save_face(name, photo, output_file):
     return True
 
 
-# script
+
 if __name__ == '__main__':
+    """
+    Main script responsible for processing whole dataset. It takes no arguments.
+    """
     print("Opening metadata file...")
     try:
         photos, names = load_metadata(METADATA_FILE)
