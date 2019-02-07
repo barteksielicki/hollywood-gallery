@@ -66,7 +66,8 @@
   const API_URL = 'https://hollywoodgallery.mini.pw.edu.pl'
 
   export default {
-    data () {
+	// Global variables
+    data () { 
       return {
         video: null,
         canvas: null,
@@ -91,6 +92,7 @@
       // get camera input
       this.video = document.getElementById('video')
 
+	  // Loading camera from DOM
       navigator.mediaDevices.getUserMedia({video: true, audio: false})
         .then(stream => {
           this.video.srcObject = stream
@@ -100,24 +102,17 @@
           console.log('Camera loaded')
         })
         .catch(error => {
-          console.log('Error loading camera.', error)
+          console.log('Error loading camera.', error) # If error when loading camera then log 
         })
     },
-    watch: {
-      isReady (nowReady, wasReady) {
+    watch: { 
+      isReady (nowReady, wasReady) { // Starting loop that watches the camera input - capturing frame every second
         if (!wasReady && nowReady) {
           console.log('Capturing loop started...')
           setTimeout(this.captureFrame, 1000)
         }
       },
-      blobImage (blob) {
-        // render preview
-        // const reader = new FileReader()
-        // reader.readAsDataURL(blob)
-        // // reader.onloadend = () => {
-        // //   this.base64Image = reader.result
-        // //   console.log('base64 end')
-        // // }
+      blobImage (blob) { // Handler for new blob
 
         const currentImage = this.responseImage
         const currentName = this.responseName
@@ -129,25 +124,25 @@
         console.log('making request...')
         axios.post(API_URL + '/process', data, {
           headers: {'Content-Type': 'multipart/form-data'}
-        }).then(response => {
-          if (response.data.photo) {
+        }).then(response => { 
+          if (response.data.photo) { // Read response and display returned actor
             this.responseImage = `${API_URL}/${response.data.photo.replace('data/imdb_crop', 'img')}`
             this.responseName = response.data.name
             this.faceNotDetectedCounter = 0
-          } else {
+          } else { // If no image returned then display warning
             this.responseImage = null
             this.responseName = ''
             this.showWarn('Cannot detect face', 'Try to bring your face closer to the webcam.')
-            if (this.faceNotDetectedCounter++ === 10) {
+            if (this.faceNotDetectedCounter++ === 10) { // If no one was detected since 10 requets then reset actors' history
               this.resetStats()
             }
           }
-        }).catch(err => {
+        }).catch(err => { // If error when sending request or receiving response then display error
           this.responseImage = null
           this.responseName = ''
           this.showError('Error', 'Something went wrong, please contact serwer administrator.')
         }).finally(() => {
-          if (currentImage && this.history.length === 5) {
+          if (currentImage && this.history.length === 5) { // Displaying image from response and updating history
             this.history.pop()
           }
           if (currentImage) {
@@ -156,12 +151,12 @@
               name: currentName
             })
           }
-          setTimeout(this.captureFrame, 1000)
+          setTimeout(this.captureFrame, 1000) // Timeout for next image capture
         })
       }
     },
-    methods: {
-      captureFrame () {
+    methods: { // Block with methods used in application
+      captureFrame () { // Method (handler) for capturing frame
         // capture camera frame
         console.log('capturing frame...')
         this.context.translate(120, 120);
@@ -171,16 +166,16 @@
         this.context.translate(120, 120);
         this.context.rotate(-this.rotation * Math.PI / 180)
         this.context.translate(-120, -120);
-        this.canvas.toBlob(blob => {
+        this.canvas.toBlob(blob => { // After casting image to blob save it to variable
           this.blobImage = blob
         })
       },
-      resetStats () {
+      resetStats () { // Method for reseting statistics (history of returned actors)
         console.log('reset')
         this.faceNotDetectedCounter = 0
         this.history.splice(0, this.history.length)
       },
-      showWarn (title, message) {
+      showWarn (title, message) { // Method for displaying warning
         this.$notify({
           group: 'foo',
           type: 'warn',
@@ -189,7 +184,7 @@
           text: message
         })
       },
-      showError (title, message) {
+      showError (title, message) { // Method for displaying error
         this.$notify({
           group: 'foo',
           type: 'error',
@@ -198,7 +193,7 @@
           text: message
         })
       },
-      rotate () {
+      rotate () { // Method for rotating camera input
         this.rotation = (this.rotation + 90) % 360
       }
 
