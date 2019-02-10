@@ -1,7 +1,7 @@
 ---
 title: 'Report'
 subtitle: 'Case studies 2019'
-author: 'na_omit group'
+author: 'na_omit group - Damian Kisieliński, Bartek Sielicki, Patryk Wołosz'
 output:
   pdf_document: default
   
@@ -13,20 +13,20 @@ library(ggplot2)
 
 ## Motivation
 
-Our project is used to see which actor you look alike. To do that we translated a dataset of actors' images to 128-dimensional vectors using deep learning. The application itself uses the image from the user's camera which is also translated to a vector (the same way the actors' photos were). When we have this vector we can find actor's vector that is closest to the user's one. Then the photo, that this actor's vector was made from, is returned as an output. We decided to conduct this experiment to find out if this solution works and by work we mean that it really returns the most look alike photo to the user's one. \\
-We wanted to test if the solution really works (returns most look alike actor) and if so then how stable it is (how often is the same, most similar actor returned for one person). To do that we decided to test it by sending images of actors that are in our databse - if it works then the same actor should be returned most of the time. Other part of the experiment is we measured how the amount of actors in database affects the outcome accuracy. We would expect that changing the amount of actors that are considered by our application could change the accuracy. Other part of this experiment is we took a photo of a person and put it in the databse, then let this person use the application and see how often his photo will be returned. \\
+Our project is used to see which actor you look alike. To do that we translated a dataset of actors' images to 128-dimensional vectors using deep learning. The application itself uses the image from the user's camera which is also translated to a vector (the same way the actors' photos were). When we have this vector we can find actor's vector that is closest to the user's one. Then the photo, that this actor's vector was made from, is returned as an output. We decided to conduct this experiment to find out if this solution works and by work we mean that it really returns the most look alike photo to the user's one. \newline
+We wanted to test if the solution really works (returns most look alike actor) and if so then how stable it is (how often is the same, most similar actor returned for one person). To do that we decided to test it by sending images of actors that are in our databse - if it works then the same actor should be returned most of the time. Other part of the experiment is we measured how the amount of actors in database affects the outcome accuracy. We would expect that changing the amount of actors that are considered by our application could change the accuracy. Other part of this experiment is we took a photo of a person and put it in the databse, then let this person use the application and see how often his photo will be returned. This part will let us see the accuracy it has when it works with live data (photos are still, while the person will naturally move in front of the camera).
 
 ## Experiment details
 
 First we need to define what we mean by accuracy - we will send a photo of an actor, that we know that he/she is in our database and see if this actor is returned. The accuracy is a percent of times that the proper actor was returned to the amount of all tries. We tested the accuracy change by performing an experiment - we chose 4 actors and got 5 photos of each actor. We selected the photos that we knew didn't appear in the database. Each photo has been changed to make it look like it has been received from the webcam (image from webcam is not as sharp as a photo taken with phone/camera and our application will be using webcams, so we need to stimulate the inpure images it creates) - we had to lower the quality of the photos. Each photo was transformed 5 independent times by pipeline:  
 
 * Add random number form [-30, 30] to color of each pixel.
-* Change contrast by scaling each pixel value to $255*(I_{ij}/255)^{gamma}$, where gamma is random number form [0.7, 1.3].
+* Change contrast by scaling each pixel value to $255*(I_{ij}/255)^{gamma}$, where gamma is random number from [0.7, 1.3].
 * Degrade image quality by applying JPEG compression with random degree from [60, 85].
 
-To achieve this we used python library $imgaug$ and finally got a collection of 100 photos. Whole collection was processed 5 times, each time with different amount of actors (the values being 1000, 5000, 10000, 15000, all). A special version of the user interface has been prepared, allowing us to upload photos and read results. This code is on the branch test. The results of this experiment are below.//
+To achieve this we used python library $imgaug$ and finally got a collection of 100 photos. Whole collection was processed 5 times, each time with different amount of actors (the values being 1000, 5000, 10000, 15000, all). A special version of the user interface has been prepared, allowing us to upload photos and read results. This code is on the branch test. The results of this experiment are below. \newline
 
-
+We did the second part of the experiment by putting 3 photos of one of us in the database and then setting our application to work on the whole dataset. Then the one that had the photos taken was sitting in front of the camera and we were measuring how often his photos appeared.
 
 ## Results
 
@@ -68,7 +68,10 @@ ggplot(df, aes(x=limit, y=value, group=actor)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-The chart above shows the accuracy of recognizing particular actors in the pictures. The general trend is downward, although the increase of the actors limit does not always lead to a decrease in accuracy.
+The chart above shows the accuracy of recognizing particular actors in the pictures. The general trend is downward, although the increase of the actors limit does not always lead to a decrease in accuracy. \newline
+
+Last results are the ones with our photos. The photos of one of us were in the dataset, we set the application to work on all photos and the person, which photos were added, was sitting in front of the camera for about 5 minutes. Out of 287 responses from the server, 193 were one of those three photos that were added, which gives about 67\% accuracy. It seems that this score is quite low, but we must take in consideration that the person sitting on front of the camera was acting naturally, that means he wasn't just sitting and looking straight into the camera.
 
 ## Conclusions
-As we expect changing the amount of actors that are considered by our application changes the accuracy. The more actors in the database, the lower accuracy is. Overall accuracy vary from 90 to 75, so its drop is rather low.
+
+Our experiment showed that our application works - it doesn't return random photos from the database - for our photos the accuracy is over 50\%. Overall accuracy is not best in this part of the experiment. Second thing is the accuracy change when changing the amount of the actors taking in consideration. As we expected the it dropped from 90\% on 1000 actors to around 76\% on all actors. When we consider seperated actors the lowest accuracy was still over 70\% which we think is quite good. Last thing that needs to be said is that our app performs better on still pictures (70\% accuracy on actor's photos versus 67\% of live experiment), but still in our opinion working on this application resulted in success.
