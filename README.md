@@ -1,8 +1,10 @@
 # hollywood-gallery
 
-This project is for telling people which actor they look alike. The idea is very simple - user sits in front of the computer (which has 
+This application can tell people which actor they look alike. The idea is very simple - user sits in front of the computer (which has 
 a camera, of course) and when the application will capture the image from the camera's picture then it will show the name and photo 
 of the most look alike actor. Then after some time it will try to find the face again and the whole process will continue until user turns off the app. Working application can be found under the address: https://hollywoodgallery.mini.pw.edu.pl/.
+
+The project was made on [research workshops classes](https://github.com/pbiecek/CaseStudies2019W) at the Warsaw University of Technology at the Faculty of Mathematics and Information Science by Bartłomiej Sielicki, Patryk Wołosz and Damian Kisieliński.
 
 ## Face recognition
 
