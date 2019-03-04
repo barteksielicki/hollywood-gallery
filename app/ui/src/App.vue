@@ -102,7 +102,7 @@
           console.log('Camera loaded')
         })
         .catch(error => {
-          console.log('Error loading camera.', error) # If error when loading camera then log 
+          console.log('Error loading camera.', error)
         })
     },
     watch: { 
