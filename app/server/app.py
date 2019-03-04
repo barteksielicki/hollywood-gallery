@@ -22,6 +22,7 @@ class ProcessImageHandler(tornado.web.RequestHandler):
     """
     Tornado RequestHandler. Provides one POST endpoint that accepts webcam photo.
     """
+
     def set_default_headers(self):
         """
         Allows requests from other domains. We need it for testing purposes.
